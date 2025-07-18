@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Importance of Character (Sheel)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Gujarati', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border: 1px solid #e5e7eb;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .lang-btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .lang-btn.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #1d4ed8;
+        }
+        .lang-btn:not(.active) {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+        .icon {
+            width: 3rem;
+            height: 3rem;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        .list-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        .list-item svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="max-w-2xl mx-auto p-4 sm:p-6 md:p-8">
+
+        <!-- Header and Language Selector -->
+        <header class="text-center mb-8">
+            <h1 id="main-title" class="text-3xl md:text-4xl font-bold text-blue-600 mb-4"></h1>
+            <div class="flex justify-center items-center space-x-4 bg-white p-2 rounded-full shadow-inner">
+                <button id="btn-gu" class="lang-btn">ગુજરાતી</button>
+                <button id="btn-en" class="lang-btn">English</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Section 1: The Cautionary Tale -->
+            <div class="card bg-rose-50 border-rose-200">
+                <div class="flex items-start">
+                    <div class="icon text-rose-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 id="story-title" class="text-xl font-bold text-rose-800 mb-2"></h2>
+                        <p id="story-body" class="text-rose-700"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: The Core Issue -->
+            <div class="card bg-amber-50 border-amber-200">
+                <div class="flex items-start">
+                    <div class="icon text-amber-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 id="environment-title" class="text-xl font-bold text-amber-800 mb-2"></h2>
+                        <p id="environment-body" class="text-amber-700"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: The Ideal Environment -->
+            <div class="card bg-teal-50 border-teal-200">
+                <h2 id="ideal-title" class="text-xl font-bold text-teal-800 mb-4"></h2>
+                <div id="ideal-list"></div>
+            </div>
+
+            <!-- Section 4: The Problematic Environment -->
+            <div class="card bg-red-50 border-red-200">
+                <h2 id="problem-title" class="text-xl font-bold text-red-800 mb-4"></h2>
+                <div id="problem-list"></div>
+            </div>
+
+            <!-- Section 5: Benefits of Good Character -->
+            <div class="card bg-green-50 border-green-200">
+                <h2 id="benefits-title" class="text-xl font-bold text-green-800 mb-4"></h2>
+                <div id="benefits-list"></div>
+            </div>
+            
+            <!-- Section 6: The Final Choice -->
+            <div class="card bg-indigo-50 border-indigo-200">
+                 <div class="flex items-start">
+                    <div class="icon text-indigo-500">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 id="choice-title" class="text-xl font-bold text-indigo-800 mb-2"></h2>
+                        <p id="choice-body" class="text-indigo-700"></p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-8 text-gray-500">
+            <p id="author-info" class="text-sm"></p>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- CONTENT DATABASE ---
+        const content = {
+            gu: {
+                mainTitle: "શીલ: એક વિશ્લેષણ",
+                storyTitle: "એક ચેતવણીરૂપ કિસ્સો",
+                storyBody: "જ્યારે કોઈ વ્યક્તિ ચારિત્ર્યની મર્યાદા ઓળંગે છે, ત્યારે તેનું પરિણામ માત્ર વ્યક્તિગત જ નહીં, પરંતુ સમગ્ર પરિવાર માટે પીડાદાયક બને છે. વિશ્વાસ અને વફાદારી વિનાનું જીવન તૂટેલા સપના જેવું બની જાય છે.",
+                environmentTitle: "મુખ્ય મુદ્દો: વાતાવરણની અસર",
+                environmentBody: "વ્યક્તિના ચારિત્ર્યનું ઘડતર તેને મળતા વાતાવરણ પર આધાર રાખે છે. યોગ્ય વાતાવરણ ચારિત્ર્યનું રક્ષણ સરળ બનાવે છે, જ્યારે વિપરીત વાતાવરણ તેને લગભગ અશક્ય બનાવી દે છે.",
+                idealTitle: "ચારિત્ર્ય માટે યોગ્ય વાતાવરણ",
+                idealList: [
+                    "સહ-શિક્ષણ (Co-education) નો અભાવ.",
+                    "મીડિયામાં સ્વચ્છ અને સંસ્કારી સામગ્રી.",
+                    "બધી જગ્યાએ યોગ્ય ડ્રેસ-કોડનું પાલન.",
+                    "સ્ત્રીઓને બિનજરૂરી રીતે ઘરની બહાર ન જવું પડે તેવી વ્યવસ્થા.",
+                    "વિકૃતિ ફેલાવતા તત્વો માટે કડક સજા.",
+                    "શિક્ષણમાં ચારિત્ર્યના મહત્વ પર ભાર.",
+                    "ભારતીય સંસ્કૃતિ અને મર્યાદાનું ગૌરવ."
+                ],
+                problemTitle: "આજનું ચિંતાજનક વાતાવરણ",
+                problemList: [
+                    "મોટી ઉંમર સુધી લગ્નમાં વિલંબ.",
+                    "લાગણીઓને ભડકાવતા નિમિત્તોની ભરમાર.",
+                    "ટીવી, મૂવીઝ અને જાહેરાતોમાં અશ્લીલતા.",
+                    "શિક્ષણમાં ચારિત્ર્ય ઘડતરનો અભાવ.",
+                    "અયોગ્ય ફ્રેન્ડ સર્કલ અને સોશિયલ મીડિયાનો દુરુપયોગ.",
+                    "દેખાદેખી અને ખોટી આધુનિકતાની દોડ."
+                ],
+                benefitsTitle: "શુદ્ધ ચારિત્ર્યના ફાયદા",
+                benefitsList: [
+                    "લાંબુ અને સ્વસ્થ આયુષ્ય.",
+                    "મજબૂત શરીર અને તેજસ્વી ત્વચા.",
+                    "પ્રબળ ઇચ્છાશક્તિ અને મનોબળ.",
+                    "વિકસિત યાદશક્તિ અને માનસિક શક્તિ.",
+                    "આત્મિક શાંતિ અને પવિત્રતાનો અનુભવ.",
+                    "આ જન્મ અને પરભવમાં સુખદાયી."
+                ],
+                choiceTitle: "અંતિમ નિર્ણય: દેખાવું કે બનવું?",
+                choiceBody: "આપણે નક્કી કરવાનું છે કે શું આપણે માત્ર 'સારા દેખાવા' માંગીએ છીએ કે પછી 'સારા બનવા' માંગીએ છીએ? સાચો વિકાસ એ ચારિત્ર્યનો વિકાસ છે. મજબૂત ઈચ્છાશક્તિથી પવિત્ર ચારિત્ર્ય પ્રાપ્ત કરવું શક્ય છે.",
+                authorInfo: "મનીષ વી. શાહ | વોટ્સએપ: 9429926447 | વડોદરા"
+            },
+            en: {
+                mainTitle: "Character: An Analysis",
+                storyTitle: "A Cautionary Tale",
+                storyBody: "When an individual crosses the boundaries of character, the consequences are painful not just for them, but for their entire family. A life without trust and loyalty becomes like a broken dream.",
+                environmentTitle: "The Core Issue: The Impact of Environment",
+                environmentBody: "A person's character is shaped by their environment. A suitable environment makes it easy to protect one's character, while an opposing one makes it nearly impossible.",
+                idealTitle: "The Ideal Environment for Character",
+                idealList: [
+                    "Absence of co-education.",
+                    "Clean and cultured content in media.",
+                    "Adherence to a proper dress code everywhere.",
+                    "A system where women don't have to go out unnecessarily.",
+                    "Strict punishment for elements that promote perversion.",
+                    "Emphasis on the importance of character in education.",
+                    "Pride in Indian culture and its values of restraint."
+                ],
+                problemTitle: "Today's Worrisome Environment",
+                problemList: [
+                    "Delay in marriage until a late age.",
+                    "An abundance of triggers that inflame passions.",
+                    "Obscenity in TV, movies, and advertisements.",
+                    "Lack of character-building in the education system.",
+                    "Inappropriate friend circles and misuse of social media.",
+                    "A race for superficiality and false modernity."
+                ],
+                benefitsTitle: "Benefits of a Pure Character",
+                benefitsList: [
+                    "A long and healthy life.",
+                    "A strong body and radiant skin.",
+                    "Powerful willpower and mental strength.",
+                    "Enhanced memory and mental faculties.",
+                    "Experience of inner peace and purity.",
+                    "Brings happiness in this life and the next."
+                ],
+                choiceTitle: "The Final Choice: To Seem or To Be?",
+                choiceBody: "We must decide whether we want to merely 'seem good' or actually 'be good'. True progress is the progress of character. With a strong will, achieving a pure character is possible.",
+                authorInfo: "Manish V. Shah | WhatsApp: 9429926447 | Vadodara"
+            }
+        };
+
+        // --- DOM ELEMENTS ---
+        const mainTitle = document.getElementById('main-title');
+        const storyTitle = document.getElementById('story-title');
+        const storyBody = document.getElementById('story-body');
+        const environmentTitle = document.getElementById('environment-title');
+        const environmentBody = document.getElementById('environment-body');
+        const idealTitle = document.getElementById('ideal-title');
+        const idealList = document.getElementById('ideal-list');
+        const problemTitle = document.getElementById('problem-title');
+        const problemList = document.getElementById('problem-list');
+        const benefitsTitle = document.getElementById('benefits-title');
+        const benefitsList = document.getElementById('benefits-list');
+        const choiceTitle = document.getElementById('choice-title');
+        const choiceBody = document.getElementById('choice-body');
+        const authorInfo = document.getElementById('author-info');
+        
+        const btnGu = document.getElementById('btn-gu');
+        const btnEn = document.getElementById('btn-en');
+
+        // --- ICONS for lists ---
+        const checkIcon = `
+            <svg class="text-teal-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>`;
+        const xIcon = `
+            <svg class="text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>`;
+        const benefitIcon = `
+             <svg class="text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.0" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>`;
+
+        // --- LOGIC ---
+        function updateLanguage(lang) {
+            const data = content[lang];
+
+            // Update button styles
+            if (lang === 'gu') {
+                btnGu.classList.add('active');
+                btnEn.classList.remove('active');
+                document.body.style.fontFamily = "'Noto Sans Gujarati', 'Inter', sans-serif";
+            } else {
+                btnEn.classList.add('active');
+                btnGu.classList.remove('active');
+                document.body.style.fontFamily = "'Inter', 'Noto Sans Gujarati', sans-serif";
+            }
+
+            // Update text content
+            mainTitle.textContent = data.mainTitle;
+            storyTitle.textContent = data.storyTitle;
+            storyBody.textContent = data.storyBody;
+            environmentTitle.textContent = data.environmentTitle;
+            environmentBody.textContent = data.environmentBody;
+            idealTitle.textContent = data.idealTitle;
+            problemTitle.textContent = data.problemTitle;
+            benefitsTitle.textContent = data.benefitsTitle;
+            choiceTitle.textContent = data.choiceTitle;
+            choiceBody.textContent = data.choiceBody;
+            authorInfo.textContent = data.authorInfo;
+
+            // Update lists
+            idealList.innerHTML = data.idealList.map(item => `
+                <div class="list-item bg-teal-100/60">${checkIcon}<span>${item}</span></div>
+            `).join('');
+
+            problemList.innerHTML = data.problemList.map(item => `
+                <div class="list-item bg-red-100/60">${xIcon}<span>${item}</span></div>
+            `).join('');
+
+            benefitsList.innerHTML = data.benefitsList.map(item => `
+                <div class="list-item bg-green-100/60">${benefitIcon}<span>${item}</span></div>
+            `).join('');
+        }
+
+        // Event Listeners
+        btnGu.addEventListener('click', () => updateLanguage('gu'));
+        btnEn.addEventListener('click', () => updateLanguage('en'));
+
+        // Initial Load
+        window.onload = () => {
+            updateLanguage('gu'); // Default to Gujarati
+        };
+    </script>
+
+</body>
+</html>

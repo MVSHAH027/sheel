@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz on Sheel (શીલ પર ક્વિઝ)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@400;700&family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', 'Hind Vadodara', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px;
+        }
+
+        .header {
+            padding: 20px;
+            background: linear-gradient(135deg, #4a90e2, #50e3c2);
+            color: white;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        .lang-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid white;
+            background-color: transparent;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active, .lang-btn:hover {
+            background-color: white;
+            color: #4a90e2;
+        }
+        
+        .quiz-body {
+            padding: 25px;
+        }
+
+        #question-container {
+            margin-bottom: 20px;
+        }
+
+        #question-text {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            background-color: #e9ecef;
+            border-color: #4a90e2;
+        }
+
+        .option-btn.correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+            font-weight: bold;
+        }
+        
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            display: none; /* Initially hidden */
+        }
+        
+        #feedback.correct {
+            background-color: #e7f5ff;
+            border: 1px solid #b3d7f7;
+            color: #004085;
+        }
+        
+        #feedback.wrong {
+            background-color: #fff0f1;
+            border: 1px solid #ffccd1;
+            color: #721c24;
+        }
+
+        #next-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #50e3c2, #4a90e2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: opacity 0.3s ease;
+            display: none; /* Initially hidden */
+        }
+        
+        #next-btn:hover {
+            opacity: 0.9;
+        }
+        
+        #score-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        #score-container h2 {
+            font-size: 1.8em;
+            color: #4a90e2;
+        }
+        
+        #score-container p {
+            font-size: 1.2em;
+        }
+        
+        #restart-btn {
+             display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #50e3c2, #4a90e2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: opacity 0.3s ease;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="header">
+            <h1 id="quiz-title">Quiz on Sheel</h1>
+            <div class="lang-selector">
+                <button class="lang-btn active" id="lang-en" onclick="switchLanguage('en')">English</button>
+                <button class="lang-btn" id="lang-gu" onclick="switchLanguage('gu')">ગુજરાતી</button>
+            </div>
+        </div>
+        <div class="quiz-body" id="quiz-body">
+            <div id="question-container">
+                <p id="question-text"></p>
+                <div id="options-container" class="options-container"></div>
+            </div>
+            <div id="feedback"></div>
+            <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+        </div>
+        <div id="score-container" style="display: none;">
+            <h2 id="score-title">Quiz Completed!</h2>
+            <p id="score-text"></p>
+            <button id="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = {
+            en: {
+                title: "Quiz on Sheel",
+                nextBtn: "Next Question",
+                restartBtn: "Restart Quiz",
+                scoreText: "You scored {score} out of {total}.",
+                quizCompleted: "Quiz Completed!",
+                questions: [
+                    {
+                        question: "According to the text, what is the foundation of a successful life, instead of 'just for fun' relationships?",
+                        options: ["Wealth and Power", "Trust and Loyalty (Sheel)", "Social Status", "Modern Lifestyle"],
+                        answer: 1,
+                        explanation: "The text states that life runs on relationships full of trust and loyalty, which is referred to as 'Sheel'."
+                    },
+                    {
+                        question: "What was the main reason for Shaili's marriage breaking down?",
+                        options: ["Her husband's fault", "Her parents' pressure", "Interference from her past 'boy-friends'", "Financial problems"],
+                        answer: 2,
+                        explanation: "Shaili's past 'boy-friends' interfered, leading to the breakdown of her marriage."
+                    },
+                    {
+                        question: "Whose fault is it considered to be from an internal perspective for the problems faced by girls like Shaili?",
+                        options: ["Shaili herself", "Her friends", "Her husband", "The environment that has lost 'Sheel'"],
+                        answer: 3,
+                        explanation: "From an internal perspective, the text blames the entire environment from which 'Sheel' (virtue) has disappeared."
+                    },
+                    {
+                        question: "Which of the following is NOT listed as a feature of a suitable environment for practicing 'Sheel'?",
+                        options: ["No co-education", "Strict dress code", "Promoting Western culture", "Zero vulgarity in media"],
+                        answer: 2,
+                        explanation: "Promoting Western culture is not mentioned. The text suggests that an environment without co-education, with dress codes, and clean media is suitable for practicing 'Sheel'."
+                    },
+                    {
+                        question: "What does the text suggest is a major problem in modern society regarding adolescents?",
+                        options: ["Lack of education", "Keeping them unmarried for many years after they mature", "Too much parental control", "Lack of career opportunities"],
+                        answer: 1,
+                        explanation: "The text argues that keeping mature adolescents unmarried for 10-15 years is a major problem, as their natural feelings find unhealthy outlets."
+                    },
+                    {
+                        question: "What happens when natural youthful feelings are suppressed like a dammed river?",
+                        options: ["They disappear over time", "They find their own, often inappropriate, paths", "They lead to spiritual growth", "They make the person stronger"],
+                        answer: 1,
+                        explanation: "The text compares these feelings to a rushing stream; if dammed, it will find its own way, which may be undesirable."
+                    },
+                    {
+                        question: "What is required for the complete observance of celibacy (Brahmacharya)?",
+                        options: ["A modern lifestyle", "A life of a fully restrained monk with depth in austerity and spirituality", "Having many friends", "Watching movies and TV"],
+                        answer: 1,
+                        explanation: "The text states that a life of a fully restrained monk (Munijivan) with deep austerity and spirituality makes it possible to observe complete celibacy."
+                    },
+                    {
+                        question: "Which of these is a benefit of practicing pure 'Sheel' (chastity)?",
+                        options: ["It makes a person socially popular", "It leads to a long, strong life and increased mental power", "It guarantees financial success", "It is only for monks"],
+                        answer: 1,
+                        explanation: "Practicing 'Sheel' provides benefits like a long life, strong body, and increased will-power, mind-power, and memory-power."
+                    },
+                    {
+                        question: "What does a modern scientist's research say about the competition within the body?",
+                        options: ["Between the heart and lungs", "Between physical strength and intelligence", "Between the brain and the sex-organ for the body's energy", "Between different emotions"],
+                        answer: 2,
+                        explanation: "A scientist is quoted as saying there's a competition between the brain and the sex organ over the body's energy. A lustful person becomes weak both physically and mentally."
+                    },
+                    {
+                        question: "What is one of the meanings of 'Sheel' mentioned in the text?",
+                        options: ["A strict rule", "Nature or disposition (Swabhav)", "A type of clothing", "A social trend"],
+                        answer: 1,
+                        explanation: "The text explains that one meaning of 'Sheel' is 'Swabhav' or nature, that which suits human nature and maintains family happiness."
+                    },
+                    {
+                        question: "What book does Sanyam suggest to Yug for more knowledge on 'Sheel'?",
+                        options: ["The Art of Living", "Sheelopadeshamala", "The Power of Now", "Secrets of a Happy Life"],
+                        answer: 1,
+                        explanation: "Sanyam suggests the book 'Sheelopadeshamala' to Yug to get more knowledge about the importance and examples of 'Sheel'."
+                    },
+                    {
+                        question: "What is the central dilemma Yug faces about changing himself?",
+                        options: ["Worrying about what to wear", "Worrying about 'seeming' good versus 'being' good", "Worrying about losing friends", "Worrying about money"],
+                        answer: 1,
+                        explanation: "The core conflict is whether to worry about how one appears to others ('seeming' good) or to focus on actually becoming a virtuous person ('being' good)."
+                    },
+                    {
+                        question: "How does the text describe the present society?",
+                        options: ["As a well-oiled machine", "Like a rotten product in shiny packaging", "A garden of blooming flowers", "A pillar of strength"],
+                        answer: 1,
+                        explanation: "The text compares present society to a rotten product inside shiny packaging, meaning it looks good on the outside but is decaying internally."
+                    },
+                    {
+                        question: "What is Sanyam's final advice to Yug?",
+                        options: ["To ignore the problem", "To move to another country", "To create a strong will to achieve pure 'Sheel'", "To conform to society"],
+                        answer: 2,
+                        explanation: "Sanyam's concluding advice is to create a strong will to achieve pure 'Sheel', stating 'Where there is a will, there is a way.'"
+                    },
+                    {
+                        question: "What does the text imply about the influence of TV, movies, and advertisements on 'Sheel'?",
+                        options: ["They are educational", "They are neutral", "They negatively impact and erode 'Sheel'", "They promote family values"],
+                        answer: 2,
+                        explanation: "The text heavily implies that media like TV and movies, along with advertisements, contribute to an environment that is detrimental to 'Sheel'."
+                    },
+                    {
+                        question: "The story of Shaili is told to Yug to...",
+                        options: ["Gossip about her", "Make him sad", "Help him learn a valuable lesson", "Show that marriage is bad"],
+                        answer: 2,
+                        explanation: "Sanyam tells Shaili's painful story so that Yug can learn something good from it."
+                    },
+                    {
+                        question: "What does the text say about parents' awareness of their children's lives?",
+                        options: ["They are always fully aware", "They are often in a delusion, thinking their child can do no wrong", "They don't care about their children", "They encourage bad behavior"],
+                        answer: 1,
+                        explanation: "The text suggests that parents often live in a delusion, believing their daughter is very good and sensible, and wake up when it's too late."
+                    },
+                    {
+                        question: "What is the meaning of 'Shaili' as described in the text?",
+                        options: ["A beautiful flower", "A double-beaten father and a crying mother", "A successful woman", "A loyal friend"],
+                        answer: 1,
+                        explanation: "The text metaphorically defines 'Shaili' as a double-beaten father, a crying mother, a brother with his head down, and a toy for vile boyfriends."
+                    },
+                    {
+                        question: "What is considered the 'actual progress' according to Sanyam?",
+                        options: ["Financial growth", "Technological advancement", "Character-progress", "Social popularity"],
+                        answer: 2,
+                        explanation: "Sanyam states that 'character-progress is the actual progress' and suggests we need to go in reverse to achieve it."
+                    },
+                    {
+                        question: "What is the ultimate solution proposed to overcome the negative environment?",
+                        options: ["Changing the government", "Waiting for society to change", "Individual will-power and decision to be good", "Blaming others"],
+                        answer: 2,
+                        explanation: "The final message is that personal change is possible through a strong will, encapsulated in the phrase 'Where there is a will, there is a way.'"
+                    }
+                ]
+            },
+            gu: {
+                title: "શીલ પર ક્વિઝ",
+                nextBtn: "આગલો પ્રશ્ન",
+                restartBtn: "ક્વિઝ ફરી શરૂ કરો",
+                scoreText: "તમારો સ્કોર {total} માંથી {score} છે.",
+                quizCompleted: "ક્વિઝ પૂર્ણ થઈ!",
+                questions: [
+                    {
+                        question: "પાઠ અનુસાર, 'ફક્ત મનોરંજન' વાળા સંબંધોને બદલે સફળ જીવનનો પાયો શું છે?",
+                        options: ["ધન અને સત્તા", "વિશ્વાસ અને વફાદારી (શીલ)", "સામાજિક દરજ્જો", "આધુનિક જીવનશૈલી"],
+                        answer: 1,
+                        explanation: "પાઠમાં જણાવાયું છે કે જીવન વિશ્વાસ અને વફાદારીભર્યા સંબંધોથી ચાલે છે, જેને 'શીલ' કહેવામાં આવે છે."
+                    },
+                    {
+                        question: "શૈલીના લગ્ન તૂટવાનું મુખ્ય કારણ શું હતું?",
+                        options: ["તેના પતિનો દોષ", "તેના માતા-પિતાનું દબાણ", "તેના ભૂતકાળના 'બોય-ફ્રેન્ડ્સ'ની દખલગીરી", "આર્થિક સમસ્યાઓ"],
+                        answer: 2,
+                        explanation: "શૈલીના ભૂતકાળના 'બોય-ફ્રેન્ડ્સ' એ દખલગીરી કરી, જેના કારણે તેના લગ્નજીવનનો અંત આવ્યો."
+                    },
+                    {
+                        question: "શૈલી જેવી છોકરીઓ દ્વારા સામનો કરવામાં આવતી સમસ્યાઓ માટે આંતરિક દ્રષ્ટિએ કોનો દોષ ગણવામાં આવે છે?",
+                        options: ["શૈલી પોતે", "તેના મિત્રો", "તેના પતિ", "એવું વાતાવરણ જેણે 'શીલ' ગુમાવ્યું છે"],
+                        answer: 3,
+                        explanation: "આંતરિક દ્રષ્ટિએ, પાઠ સમગ્ર વાતાવરણને દોષી ઠેરવે છે જેમાંથી 'શીલ' (સદગુણ) અદૃશ્ય થઈ ગયું છે."
+                    },
+                    {
+                        question: "નીચેનામાંથી કયું 'શીલ' પાળવા માટે યોગ્ય વાતાવરણનું લક્ષણ નથી?",
+                        options: ["સહ-શિક્ષણ (કો-એજ્યુકેશન) ન હોવું", "કડક ડ્રેસ-કોડ", "પશ્ચિમી સંસ્કૃતિને પ્રોત્સાહન", "મીડિયામાં શૂન્ય-ગંદકી"],
+                        answer: 2,
+                        explanation: "પશ્ચિમી સંસ્કૃતિને પ્રોત્સાહન આપવાનો ઉલ્લેખ નથી. પાઠ સૂચવે છે કે સહ-શિક્ષણ વિનાનું, ડ્રેસ-કોડ સાથેનું અને સ્વચ્છ મીડિયાવાળું વાતાવરણ 'શીલ' પાળવા માટે યોગ્ય છે."
+                    },
+                    {
+                        question: "પાઠ મુજબ કિશોરો અંગે આધુનિક સમાજમાં કઈ મોટી સમસ્યા છે?",
+                        options: ["શિક્ષણનો અભાવ", "સમજણા થયા પછી પણ ઘણા વર્ષો સુધી તેમને અપરિણીત રાખવા", "માતા-પિતાનું વધુ પડતું નિયંત્રણ", "કારકિર્દીની તકોનો અભાવ"],
+                        answer: 1,
+                        explanation: "પાઠમાં દલીલ કરવામાં આવી છે કે સમજણા કિશોરોને ૧૦-૧૫ વર્ષ સુધી અપરિણીત રાખવા એ એક મોટી સમસ્યા છે, કારણ કે તેમની કુદરતી લાગણીઓ અયોગ્ય માર્ગો શોધે છે."
+                    },
+                    {
+                        question: "જ્યારે કુદરતી યુવા લાગણીઓને બંધ બાંધેલી નદીની જેમ દબાવવામાં આવે ત્યારે શું થાય છે?",
+                        options: ["તે સમય જતાં અદૃશ્ય થઈ જાય છે", "તેઓ પોતાના, ઘણીવાર અયોગ્ય, રસ્તાઓ શોધી લે છે", "તે આધ્યાત્મિક વિકાસ તરફ દોરી જાય છે", "તે વ્યક્તિને વધુ મજબૂત બનાવે છે"],
+                        answer: 1,
+                        explanation: "પાઠ આ લાગણીઓને વહેતા પ્રવાહ સાથે સરખાવે છે; જો તેને રોકવામાં આવે, તો તે પોતાનો રસ્તો શોધી કાઢશે, જે અનિચ્છનીય હોઈ શકે છે."
+                    },
+                    {
+                        question: "સંપૂર્ણ બ્રહ્મચર્યના પાલન માટે શું જરૂરી છે?",
+                        options: ["આધુનિક જીવનશૈલી", "તપ અને અધ્યાત્મમાં ઊંડાણ સાથેનું પૂર્ણ સંયમિત મુનિજીવન", "ઘણા મિત્રો હોવા", "ફિલ્મો અને ટીવી જોવું"],
+                        answer: 1,
+                        explanation: "પાઠમાં જણાવાયું છે કે તપ અને અધ્યાત્મમાં ઊંડાણ ધરાવતું પૂર્ણ સંયમિત મુનિજીવન સંપૂર્ણ બ્રહ્મચર્યનું પાલન શક્ય બનાવે છે."
+                    },
+                    {
+                        question: "શુદ્ધ 'શીલ' (ચારિત્ર્ય) પાળવાનો આમાંથી કયો ફાયદો છે?",
+                        options: ["તે વ્યક્તિને સામાજિક રીતે લોકપ્રિય બનાવે છે", "તે લાંબુ, મજબૂત જીવન અને વધેલી માનસિક શક્તિ તરફ દોરી જાય છે", "તે આર્થિક સફળતાની ખાતરી આપે છે", "તે ફક્ત સાધુઓ માટે છે"],
+                        answer: 1,
+                        explanation: "'શીલ' પાળવાથી લાંબુ આયુષ્ય, મજબૂત શરીર અને ઈચ્છા-શક્તિ, મન-શક્તિ અને યાદ-શક્તિમાં વધારો જેવા લાભ મળે છે."
+                    },
+                    {
+                        question: "એક આધુનિક વૈજ્ઞાનિકનું સંશોધન શરીરની અંદરની સ્પર્ધા વિશે શું કહે છે?",
+                        options: ["હૃદય અને ફેફસાં વચ્ચે", "શારીરિક શક્તિ અને બુદ્ધિ વચ્ચે", "શરીરની શક્તિ માટે મગજ અને કામ-ઇન્દ્રિય વચ્ચે", "વિવિધ લાગણીઓ વચ્ચે"],
+                        answer: 2,
+                        explanation: "એક વૈજ્ઞાનિકને ટાંકવામાં આવ્યા છે કે શરીરની શક્તિ માટે મગજ અને કામ-ઇન્દ્રિય વચ્ચે સ્પર્ધા જેવું થાય છે. વાસનાગ્રસ્ત વ્યક્તિ શારીરિક અને માનસિક બંને રીતે નિર્બળ બને છે."
+                    },
+                    {
+                        question: "પાઠમાં ઉલ્લેખિત 'શીલ' નો એક અર્થ શું છે?",
+                        options: ["એક કડક નિયમ", "સ્વભાવ (Nature)", "એક પ્રકારનો પોશાક", "એક સામાજિક પ્રવાહ"],
+                        answer: 1,
+                        explanation: "પાઠ સમજાવે છે કે 'શીલ' નો એક અર્થ 'સ્વભાવ' છે, જે માનવ સ્વભાવને અનુકૂળ આવે અને પારિવારિક પ્રસન્નતા જાળવી રાખે."
+                    },
+                    {
+                        question: "'શીલ' વિશે વધુ જ્ઞાન માટે સંયમ યુગને કયું પુસ્તક સૂચવે છે?",
+                        options: ["જીવન જીવવાની કળા", "શીલોપદેશમાલા", "વર્તમાનની શક્તિ", "સુખી જીવનના રહસ્યો"],
+                        answer: 1,
+                        explanation: "સંયમ યુગને 'શીલ' ના મહત્વ અને ઉદાહરણો વિશે વધુ જ્ઞાન મેળવવા માટે 'શીલોપદેશમાલા' પુસ્તક સૂચવે છે."
+                    },
+                    {
+                        question: "પોતાને બદલવા બાબતે યુગ કઈ મુખ્ય દ્વિધાનો સામનો કરે છે?",
+                        options: ["શું પહેરવું તેની ચિંતા", "'સારા દેખાવા' વિરુદ્ધ 'સારા બનવા'ની ચિંતા", "મિત્રો ગુમાવવાની ચિંતા", "પૈસાની ચિંતા"],
+                        answer: 1,
+                        explanation: "મુખ્ય સંઘર્ષ એ છે કે બીજાને કેવા દેખાવું તેની ચિંતા કરવી ('સારા દેખાવું') કે વાસ્તવમાં સદ્ગુણી વ્યક્તિ બનવા પર ધ્યાન કેન્દ્રિત કરવું ('સારા બનવું')."
+                    },
+                    {
+                        question: "પાઠ વર્તમાન સમાજનું વર્ણન કેવી રીતે કરે છે?",
+                        options: ["એક સુવ્યવસ્થિત મશીન તરીકે", "ચમકદાર પેકિંગમાં રહેલા સડેલા માલ જેવું", "ખીલેલા ફૂલોનો બગીચો", "શક્તિનો સ્તંભ"],
+                        answer: 1,
+                        explanation: "પાઠ વર્તમાન સમાજની તુલના ચમકદાર પેકિંગની અંદરના સડેલા માલ સાથે કરે છે, જેનો અર્થ છે કે તે બહારથી સારો દેખાય છે પણ અંદરથી સડી રહ્યો છે."
+                    },
+                    {
+                        question: "સંયમની યુગને અંતિમ સલાહ શું છે?",
+                        options: ["સમસ્યાને અવગણવી", "બીજા દેશમાં જતું રહેવું", "શુદ્ધ 'શીલ' પ્રાપ્ત કરવા માટે મજબૂત ઈચ્છાશક્તિ કેળવવી", "સમાજને અનુરૂપ થવું"],
+                        answer: 2,
+                        explanation: "સંયમની અંતિમ સલાહ શુદ્ધ 'શીલ' પ્રાપ્ત કરવા માટે મજબૂત ઈચ્છાશક્તિ બનાવવાની છે, અને કહે છે 'જ્યાં ચાહ, ત્યાં રાહ'."
+                    },
+                    {
+                        question: "પાઠ ટીવી, ફિલ્મો અને જાહેરાતોના 'શીલ' પરના પ્રભાવ વિશે શું સૂચવે છે?",
+                        options: ["તેઓ શૈક્ષણિક છે", "તેઓ તટસ્થ છે", "તેઓ 'શીલ' પર નકારાત્મક અસર કરે છે અને તેનું ધોવાણ કરે છે", "તેઓ પારિવારિક મૂલ્યોને પ્રોત્સાહન આપે છે"],
+                        answer: 2,
+                        explanation: "પાઠ સ્પષ્ટપણે સૂચવે છે કે ટીવી અને ફિલ્મો જેવા માધ્યમો, જાહેરાતોની સાથે, 'શીલ' માટે હાનિકારક વાતાવરણમાં ફાળો આપે છે."
+                    },
+                    {
+                        question: "શૈલીની વાર્તા યુગને શા માટે કહેવામાં આવે છે?",
+                        options: ["તેના વિશે ગપસપ કરવા", "તેને દુઃખી કરવા", "તેને એક મૂલ્યવાન પાઠ શીખવામાં મદદ કરવા", "લગ્ન ખરાબ છે તે બતાવવા"],
+                        answer: 2,
+                        explanation: "સંયમ શૈલીની દુઃખદ વાર્તા કહે છે જેથી યુગ તેમાંથી કંઈક સારું શીખી શકે."
+                    },
+                    {
+                        question: "પાઠ માતા-પિતાની તેમના બાળકોના જીવન વિશેની જાગૃતિ વિશે શું કહે છે?",
+                        options: ["તેઓ હંમેશા સંપૂર્ણપણે જાગૃત હોય છે", "તેઓ ઘણીવાર ભ્રમમાં હોય છે, એમ માનીને કે તેમનું બાળક ક્યારેય ખોટું ન કરી શકે", "તેઓ તેમના બાળકોની પરવા કરતા નથી", "તેઓ ખરાબ વર્તનને પ્રોત્સાહન આપે છે"],
+                        answer: 1,
+                        explanation: "પાઠ સૂચવે છે કે માતા-પિતા ઘણીવાર ભ્રમણામાં જીવે છે, એમ માનીને કે તેમની દીકરી ખૂબ સારી અને સમજદાર છે, અને જ્યારે ઘણું મોડું થઈ જાય ત્યારે જાગે છે."
+                    },
+                    {
+                        question: "પાઠમાં વર્ણવ્યા મુજબ 'શૈલી' નો અર્થ શું છે?",
+                        options: ["એક સુંદર ફૂલ", "બેવડો માર ખાધેલો બાપ અને રોતી મા", "એક સફળ સ્ત્રી", "એક વફાદાર મિત્ર"],
+                        answer: 1,
+                        explanation: "પાઠ રૂપકરૂપે 'શૈલી'ને બેવડો માર ખાધેલો બાપ, રોતી મા, નીચું માથું રાખીને ચાલતો ભાઈ અને નરાધમ બોયફ્રેન્ડ્સનું રમકડું તરીકે વ્યાખ્યાયિત કરે છે."
+                    },
+                    {
+                        question: "સંયમ અનુસાર 'વાસ્તવિક પ્રગતિ' શું ગણાય છે?",
+                        options: ["આર્થિક વૃદ્ધિ", "તકનીકી પ્રગતિ", "ચારિત્ર્ય-પ્રગતિ", "સામાજિક લોકપ્રિયતા"],
+                        answer: 2,
+                        explanation: "સંયમ કહે છે કે 'ચારિત્ર્ય-પ્રગતિ એ જ વાસ્તવિક પ્રગતિ છે' અને તેને પ્રાપ્ત કરવા માટે આપણે ઉલટી દિશામાં જવાની જરૂર છે."
+                    },
+                    {
+                        question: "નકારાત્મક વાતાવરણને દૂર કરવા માટે સૂચવેલ અંતિમ ઉપાય શું છે?",
+                        options: ["સરકાર બદલવી", "સમાજ બદલાય તેની રાહ જોવી", "વ્યક્તિગત ઇચ્છા-શક્તિ અને સારો બનવાનો નિર્ણય", "બીજાને દોષ આપવો"],
+                        answer: 2,
+                        explanation: "અંતિમ સંદેશ એ છે કે મજબૂત ઇચ્છાશક્તિ દ્વારા વ્યક્તિગત પરિવર્તન શક્ય છે, જે 'જ્યાં ચાહ, ત્યાં રાહ' વાક્યમાં સમાયેલું છે."
+                    }
+                ]
+            }
+        };
+
+        let currentLanguage = 'en';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let shuffledQuestions = [];
+
+        const quizTitle = document.getElementById('quiz-title');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackDiv = document.getElementById('feedback');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const scoreContainer = document.getElementById('score-container');
+        const quizBody = document.getElementById('quiz-body');
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            document.getElementById('lang-gu').classList.toggle('active', lang === 'gu');
+            restartQuiz();
+        }
+
+        function startQuiz() {
+            const langData = quizData[currentLanguage];
+            quizTitle.innerText = langData.title;
+            nextBtn.innerText = langData.nextBtn;
+            restartBtn.innerText = langData.restartBtn.split(' ')[0] + ' ' + langData.restartBtn.split(' ')[1];
+
+            score = 0;
+            currentQuestionIndex = 0;
+            shuffledQuestions = shuffleArray([...langData.questions]);
+            
+            scoreContainer.style.display = 'none';
+            quizBody.style.display = 'block';
+            
+            showQuestion();
+        }
+        
+        function showQuestion() {
+            resetState();
+            const questionData = shuffledQuestions[currentQuestionIndex];
+            questionText.innerText = questionData.question;
+            
+            questionData.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.classList.add('option-btn');
+                button.addEventListener('click', () => selectAnswer(index, questionData.answer));
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function resetState() {
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.className = 'feedback';
+            nextBtn.style.display = 'none';
+            while (optionsContainer.firstChild) {
+                optionsContainer.removeChild(optionsContainer.firstChild);
+            }
+        }
+
+        function selectAnswer(selectedIndex, correctIndex) {
+            const options = Array.from(optionsContainer.children);
+            const questionData = shuffledQuestions[currentQuestionIndex];
+            
+            options.forEach(button => button.disabled = true);
+
+            if (selectedIndex === correctIndex) {
+                options[selectedIndex].classList.add('correct');
+                feedbackDiv.innerHTML = `<strong>Correct!</strong><br>${questionData.explanation}`;
+                feedbackDiv.className = 'feedback correct';
+                score++;
+            } else {
+                options[selectedIndex].classList.add('wrong');
+                options[correctIndex].classList.add('correct');
+                feedbackDiv.innerHTML = `<strong>Wrong.</strong> The correct answer is "${questionData.options[correctIndex]}".<br><br><strong>Explanation:</strong> ${questionData.explanation}`;
+                 if(currentLanguage === 'gu'){
+                   feedbackDiv.innerHTML = `<strong>ખોટું.</strong> સાચો જવાબ છે "${questionData.options[correctIndex]}".<br><br><strong>સમજૂતી:</strong> ${questionData.explanation}`;
+                }
+                feedbackDiv.className = 'feedback wrong';
+            }
+            
+            feedbackDiv.style.display = 'block';
+            
+            if (shuffledQuestions.length > currentQuestionIndex + 1) {
+                nextBtn.style.display = 'block';
+            } else {
+                showScore();
+            }
+        }
+        
+        function nextQuestion() {
+            currentQuestionIndex++;
+            showQuestion();
+        }
+
+        function showScore() {
+            resetState();
+            quizBody.style.display = 'none';
+            scoreContainer.style.display = 'block';
+            const langData = quizData[currentLanguage];
+            
+            document.getElementById('score-title').innerText = langData.quizCompleted;
+            document.getElementById('score-text').innerText = langData.scoreText
+                .replace('{score}', score)
+                .replace('{total}', shuffledQuestions.length);
+        }
+        
+        function restartQuiz() {
+            startQuiz();
+        }
+
+        // Initial load
+        window.onload = startQuiz;
+    </script>
+</body>
+</html>
